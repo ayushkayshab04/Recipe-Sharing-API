@@ -1,7 +1,7 @@
 const Service  = require("./recipes.service")
 
 
-const addRecipes = async(req,res)=>{
+const addRecipesToDataBase = async(req,res)=>{
     try {
         const data = await Service.addRecipes()
         res.send(data)
@@ -32,6 +32,17 @@ const getRecipeByQuery = async(req,res)=>{
 } 
 
 
+const addRecipes = async(req,res)=>{
+    try {
+       
+        const {id,title,summary,image,readyInMinutes,servings,sourceUrl,instructions,ingredients} = req.body
+        const data = await Service.addRecipes({id,title,summary,image,readyInMinutes,servings,sourceUrl,instructions,ingredients})
+        res.send(data)
+    } catch (error) {
+        res.send(error.message)
+    }
+}
+
 const deleteRecipeById = async(req,res)=>{
     try {
         const {id} = req.params
@@ -55,6 +66,7 @@ const updateRecipe = async(req,res)=>{
 }
 
 module.exports = {
+    addRecipesToDataBase,
     addRecipes,
     getRecipe,
     getRecipeByQuery,

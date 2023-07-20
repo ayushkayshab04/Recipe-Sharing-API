@@ -10,7 +10,7 @@ const url = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=
 
 ///Hit this route to enter data into database
 
-const addRecipes = async()=>{
+const addRecipesToDataBase = async()=>{
     try {
         
         await connect()
@@ -28,6 +28,19 @@ const addRecipes = async()=>{
             return recipes
         }
     } catch (error) {
+        return error.message
+    }
+}
+
+const addRecipes = async({id,title,summary,image,readyInMinutes,servings,sourceUrl,instructions,ingredients})=>{
+    try {
+        await connect()
+        if({id,title,summary,image,readyInMinutes,servings,sourceUrl,instructions,ingredients}){
+            const recipe = new Recipe({id,title,summary,image,readyInMinutes,servings,sourceUrl,instructions,ingredients})
+            recipe.save()
+            return recipe
+        }
+    }catch (error) {
         return error.message
     }
 }
@@ -53,6 +66,8 @@ const getRecipeByQuery = async({name})=>{
         return error.message       
     }
 }
+
+
 
 const deleteRecipeById = async({id})=>{
     try {
@@ -83,6 +98,7 @@ const updateRecipe = async({id},{body})=>{
 }
 
 module.exports = {
+    addRecipesToDataBase,
     addRecipes,
     getRecipe,
     getRecipeByQuery,
